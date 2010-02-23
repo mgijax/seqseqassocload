@@ -1,0 +1,39 @@
+#format: sh
+#
+#  seqseqassocload.common.config
+#
+#  This file sets up common environment variables that are needed for 
+#	Sequence-Sequence Association Loads
+#
+###########################################################################
+
+###########################################################################
+#
+#  GENERAL SETTINGS
+#
+###########################################################################
+
+#
+#  If the MGICONFIG environment variable does not have a local override,
+#  use the default "live" settings.
+#
+if [ "${MGICONFIG}" = "" ]
+then
+    MGICONFIG=/usr/local/mgi/live/mgiconfig
+    export MGICONFIG
+fi
+
+. ${MGICONFIG}/master.config.sh
+
+#  The name of the job stream for the load
+JOBSTREAM=seq_seqassocload
+
+export JOBSTREAM
+
+#  Recipient list for mailing the log files (comma-separated)
+MAIL_LOG_CUR="sc"
+
+export MAIL_LOADNAME MAIL_LOG_PROC MAIL_LOG_CUR
+
+INSTALLDIR=${SEQSEQASSOCLOAD}
+export INSTALLDIR
