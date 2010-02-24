@@ -102,7 +102,6 @@ fi
 #
 . ${CONFIG_LOAD_COMMON}
 . ${CONFIG_LOAD}
-
 #
 #  Source the DLA library functions.
 #
@@ -177,11 +176,12 @@ date | tee -a ${LOG_DIAG}
 echo "" | tee -a ${LOG_DIAG}
 ${MGI_DBUTILS}/bin/bcpin.csh ${MGD_DBSERVER} ${MGD_DBNAME} ${TABLE} ${OUTPUTDIR} ${TABLE}.bcp ${COLDELIM} ${LINEDELIM} >> ${LOG_DIAG} 2>&1
 STAT=$?
-if [ ${STAT} -ne 0 ]
-then
-    echo "${MGI_DBUTILS}/bin/bcpin.csh failed" | tee -a ${LOG_DIAG}
-    exit 1
-fi
+checkStatus ${STAT} "bcp in"
+#if [ ${STAT} -ne 0 ]
+#then
+#    echo "${MGI_DBUTILS}/bin/bcpin.csh failed" | tee -a ${LOG_DIAG}
+#    exit 1
+#fi
 
 #
 # run postload cleanup and email logs
