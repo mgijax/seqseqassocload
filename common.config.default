@@ -25,11 +25,6 @@ fi
 
 . ${MGICONFIG}/master.config.sh
 
-#  The name of the job stream for the load
-JOBSTREAM=seq_seqassocload
-
-export JOBSTREAM
-
 #  Recipient list for mailing the log files (comma-separated)
 MAIL_LOG_CUR="sc"
 

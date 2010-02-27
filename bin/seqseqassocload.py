@@ -55,7 +55,7 @@ CRT = '\n'
 QUAL_VOCAB_KEY = 78
 
 # MGI_User key for the load
-USER_KEY = 1499
+CREATEDBY_KEY = os.environ['USERKEY']
 
 #
 # GLOBALS
@@ -187,7 +187,7 @@ def deleteByUser():
     print '%s' % mgi_utils.date()
     print 'Deleting records for this user'
     db.sql('''delete from %s '''
-	'''where _CreatedBy_key = %s''' % (table, USER_KEY), None)
+	'''where _CreatedBy_key = %s''' % (table, CREATEDBY_KEY), None)
 
 def run():
     # Purpose: iterate through the input file, resolving to keys
@@ -226,7 +226,7 @@ def run():
 	#print "%s %s %s" % (seqKey1, qualKey, seqKey2)
 	outFile.write('%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s' % \
 	    (nextKey, TAB, seqKey1, TAB, qualKey, TAB, seqKey2, \
-		TAB, USER_KEY, TAB, USER_KEY, TAB, cdate, TAB, cdate, CRT))
+		TAB, CREATEDBY_KEY, TAB, CREATEDBY_KEY, TAB, cdate, TAB, cdate, CRT))
 	nextKey = nextKey + 1
 
 # Purpose: Perform cleanup steps for the script.
