@@ -16,6 +16,7 @@
 #	 7. INFILE_NAME
 #	 8. SEQ1_LOGICAL_DBKEY
 #	 9. SEQ2_LOGICAL_DBKEY
+#	10. USER_KEY 
 #
 # Inputs:
 #	1. tab-delimited in following format:
@@ -113,7 +114,6 @@ def init():
     nextKey = results[0]['nextKey']
     if nextKey == None:
 	nextKey = 1001
-    #print 'nextKey: %s' % nextKey
 
     inFilePath = os.environ['INFILE_NAME']
     try:
@@ -140,7 +140,6 @@ def loadLookups():
 
     seq1LdbKey = os.environ['SEQ1_LOGICAL_DBKEY']
     seq2LdbKey = os.environ['SEQ2_LOGICAL_DBKEY']
-    #print 'seq1LdbKey %s seq2LdbKey %s' % (seq1LdbKey, seq2LdbKey)
     #
     # Load seq1Lookup
     #
@@ -174,7 +173,6 @@ def loadLookups():
     for r in results:
         seqKey = r['_Sequence_key']
         seqId = r['accID']
-	#print 'seq2Lookup loading "%s"' % seqId
         seq2Lookup[seqId] = seqKey
 
 def deleteByUser():
@@ -205,7 +203,6 @@ def run():
 	seqId1 = string.strip(seqId1)
 	qualifier = string.strip(qualifier)
 	seqId2 = string.strip(seqId2)
-	#print "%s %s %s" % (seqId1, qualifier, seqId2)
         if seq1Lookup.has_key(seqId1):
 	    seqKey1 = seq1Lookup[seqId1]
 	else:
@@ -213,27 +210,18 @@ def run():
 	    continue
 	if qualLookup.has_key(qualifier):
 	    qualKey = qualLookup[qualifier]
-	    #print '%s: %s' % (qualifier, qualKey)
 	else:
 	    print 'Qualifier %s is not in the database' % qualifier
 	    continue 
  	if seq2Lookup.has_key(seqId2):
 	    seqKey2 = seq2Lookup[seqId2]
-	    #print 'SeqId2 %s IS in the database' % seqId2
 	else:
             print 'SeqId2 %s is not in the database' % seqId2
 	    continue
-	#print "%s %s %s" % (seqKey1, qualKey, seqKey2)
 	outFile.write('%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s' % \
 	    (nextKey, TAB, seqKey1, TAB, qualKey, TAB, seqKey2, \
 		TAB, CREATEDBY_KEY, TAB, CREATEDBY_KEY, TAB, cdate, TAB, cdate, CRT))
 	nextKey = nextKey + 1
-
-# Purpose: Perform cleanup steps for the script.
-# Returns: Nothing
-# Assumes: Nothing
-# Effects: Nothing
-# Throws: Nothing
 
 def finalize():
     # Purpose: closes file descriptors and connection to the db

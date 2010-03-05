@@ -161,27 +161,22 @@ cleanDir ${OUTPUTDIR} ${RPTDIR}
 # and delete old associations
 #
 
-echo "\n`date`" >> ${LOG_DIAG} 
+echo "\n`date`" | tee -a ${LOG_DIAG} 
 echo "\n`date`" >> ${LOG_PROC}
 configName=`basename  ${CONFIG_LOAD}`
 echo "Running seqseqassocload ${configName}." | tee -a ${LOG_DIAG} ${LOG_PROC}
 
 # run the load
-${SEQSEQASSOCLOAD}/bin/seqseqassocload.py >>  ${LOG_DIAG}
+${SEQSEQASSOCLOAD}/bin/seqseqassocload.py >>  ${LOG_DIAG} 2>&1
 STAT=$?
 checkStatus ${STAT} "creating bcp file"
 
 # bcp in
-date | tee -a ${LOG_DIAG}
-echo "" | tee -a ${LOG_DIAG}
+echo "\n`date`" | tee -a ${LOG_DIAG}
+echo "\n`date`" >> ${LOG_PROC}
 ${MGI_DBUTILS}/bin/bcpin.csh ${MGD_DBSERVER} ${MGD_DBNAME} ${TABLE} ${OUTPUTDIR} ${TABLE}.bcp ${COLDELIM} ${LINEDELIM} >> ${LOG_DIAG} 2>&1
 STAT=$?
 checkStatus ${STAT} "bcp in"
-#if [ ${STAT} -ne 0 ]
-#then
-#    echo "${MGI_DBUTILS}/bin/bcpin.csh failed" | tee -a ${LOG_DIAG}
-#    exit 1
-#fi
 
 #
 # run postload cleanup and email logs

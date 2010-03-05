@@ -26,7 +26,7 @@ fi
 . ${MGICONFIG}/master.config.sh
 
 #  Recipient list for mailing the log files (comma-separated)
-MAIL_LOG_CUR="sc"
+MAIL_LOG_CUR="mgiadmin"
 
 export MAIL_LOADNAME MAIL_LOG_PROC MAIL_LOG_CUR
 
