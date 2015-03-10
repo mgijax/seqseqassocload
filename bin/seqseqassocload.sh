@@ -161,8 +161,10 @@ cleanDir ${OUTPUTDIR} ${RPTDIR}
 # and delete old associations
 #
 
-echo "\n`date`" | tee -a ${LOG_DIAG} 
-echo "\n`date`" >> ${LOG_PROC}
+echo "" | tee -a ${LOG_DIAG} 
+echo "`date`" | tee -a ${LOG_DIAG} 
+echo "" >> ${LOG_PROC}
+echo "`date`" >> ${LOG_PROC}
 configName=`basename  ${CONFIG_LOAD}`
 echo "Running seqseqassocload ${configName}." | tee -a ${LOG_DIAG} ${LOG_PROC}
 
@@ -172,8 +174,10 @@ STAT=$?
 checkStatus ${STAT} "creating bcp file"
 
 # bcp in
-echo "\n`date`" | tee -a ${LOG_DIAG}
-echo "\n`date`" >> ${LOG_PROC}
+echo "" | tee -a ${LOG_DIAG}
+echo "`date`" | tee -a ${LOG_DIAG}
+echo "" >> ${LOG_PROC}
+echo "`date`" >> ${LOG_PROC}
 ${MGI_DBUTILS}/bin/bcpin.csh ${MGD_DBSERVER} ${MGD_DBNAME} ${TABLE} ${OUTPUTDIR} ${TABLE}.bcp ${COLDELIM} ${LINEDELIM} >> ${LOG_DIAG} 2>&1
 STAT=$?
 checkStatus ${STAT} "bcp in"
