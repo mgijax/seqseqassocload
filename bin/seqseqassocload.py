@@ -43,7 +43,6 @@
 import sys
 import os
 import mgi_utils
-import loadlib
 import string
 import db
 #
@@ -109,7 +108,7 @@ def init():
     db.useOneConnection(1)
     db.set_sqlLogin(user, password, mgdServer, mgdDB)
  
-    results = db.sql('''select nextKey = max(_Assoc_key) + 1 '''
+    results = db.sql('''select  max(_Assoc_key) + 1 as nextKey'''
 		'''from %s''' % table, 'auto')
     nextKey = results[0]['nextKey']
     if nextKey == None:
@@ -186,6 +185,7 @@ def deleteByUser():
     print 'Deleting records for this user'
     db.sql('''delete from %s '''
 	'''where _CreatedBy_key = %s''' % (table, CREATEDBY_KEY), None)
+    db.commit()
 
 def run():
     # Purpose: iterate through the input file, resolving to keys
