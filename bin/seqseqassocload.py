@@ -108,7 +108,7 @@ def init():
     db.useOneConnection(1)
     db.set_sqlLogin(user, password, mgdServer, mgdDB)
  
-    results = db.sql('''select  max(_Assoc_key) + 1 as nextKey'''
+    results = db.sql('''select  max(_Assoc_key) + 1 as nextKey '''
 		'''from %s''' % table, 'auto')
     nextKey = results[0]['nextKey']
     if nextKey == None:
