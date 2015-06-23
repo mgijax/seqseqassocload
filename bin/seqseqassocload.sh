@@ -179,7 +179,7 @@ echo "" | tee -a ${LOG_DIAG}
 echo "`date`" | tee -a ${LOG_DIAG}
 echo "" >> ${LOG_PROC}
 echo "`date`" >> ${LOG_PROC}
-${PG_DBUTILS}/bin/bcpin.csh ${PG_DBSERVER} ${PG_DBNAME} ${TABLE} ${OUTPUTDIR} ${TABLE}.bcp ${COLDELIM} ${LINEDELIM} mgd >> ${LOG_DIAG} 2>&1
+${PG_DBUTILS}/bin/bcpin.csh ${MGD_DBSERVER} ${MGD_DBNAME} ${TABLE} ${OUTPUTDIR} ${TABLE}.bcp ${COLDELIM} ${LINEDELIM} mgd >> ${LOG_DIAG} 2>&1
 STAT=$?
 checkStatus ${STAT} "bcp in"
 
