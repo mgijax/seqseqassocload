@@ -169,7 +169,8 @@ configName=`basename  ${CONFIG_LOAD}`
 echo "Running seqseqassocload ${configName}." | tee -a ${LOG_DIAG} ${LOG_PROC}
 
 # run the load
-${SEQSEQASSOCLOAD}/bin/seqseqassocload.py >>  ${LOG_DIAG} 2>&1
+#${SEQSEQASSOCLOAD}/bin/seqseqassocload.py >>  ${LOG_DIAG} 2>&1
+${SEQSEQASSOCLOAD}/bin/seqseqassocload.py
 STAT=$?
 checkStatus ${STAT} "creating bcp file"
 
@@ -178,7 +179,7 @@ echo "" | tee -a ${LOG_DIAG}
 echo "`date`" | tee -a ${LOG_DIAG}
 echo "" >> ${LOG_PROC}
 echo "`date`" >> ${LOG_PROC}
-${MGI_DBUTILS}/bin/bcpin.csh ${MGD_DBSERVER} ${MGD_DBNAME} ${TABLE} ${OUTPUTDIR} ${TABLE}.bcp ${COLDELIM} ${LINEDELIM} >> ${LOG_DIAG} 2>&1
+${PG_DBUTILS}/bin/bcpin.csh ${MGD_DBSERVER} ${MGD_DBNAME} ${TABLE} ${OUTPUTDIR} ${TABLE}.bcp ${COLDELIM} ${LINEDELIM} mgd >> ${LOG_DIAG} 2>&1
 STAT=$?
 checkStatus ${STAT} "bcp in"
 
