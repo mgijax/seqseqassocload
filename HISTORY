@@ -1,8 +1,13 @@
+TAG: seqseqassocload-6-0-0-1
+DATE: 07/24/2015
+STAFF: lec
+CHANGES:
+1) TR11750/postgres
+
 TAG: seqseqassocload-tr11750-MP
 TAG: seqseqassocload-tr11750-BP
 DATE: 07/1/2015
 STAFF: kstone/pf
-
 
 TAG: seqseqassocload-4-3-3-4
 DATE: 03/05/2010
