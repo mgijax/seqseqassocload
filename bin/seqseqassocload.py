@@ -45,6 +45,10 @@ import os
 import mgi_utils
 import string
 import db
+
+db.setAutoTranslate(False)
+db.setAutoTranslateBE(False)
+
 #
 # Constants
 #
@@ -108,8 +112,7 @@ def init():
     db.useOneConnection(1)
     db.set_sqlLogin(user, password, mgdServer, mgdDB)
  
-    results = db.sql('''select  max(_Assoc_key) + 1 as nextKey '''
-		'''from %s''' % table, 'auto')
+    results = db.sql('''select max(_Assoc_key) + 1 as nextKey from %s''' % table, 'auto')
     nextKey = results[0]['nextKey']
     if nextKey == None:
 	nextKey = 1001
@@ -142,11 +145,11 @@ def loadLookups():
     #
     # Load seq1Lookup
     #
-    results = db.sql('''select _Object_key as _Sequence_key, accID '''
-	'''from ACC_Accession '''
-	'''where _MGIType_key = 19 '''
-	'''and preferred = 1 '''
-	'''and _LogicalDB_key = %s''' % seq1LdbKey, 'auto')
+    results = db.sql('''select _Object_key as _Sequence_key, accID
+	from ACC_Accession
+	where _MGIType_key = 19 
+	and preferred = 1 
+	and _LogicalDB_key = %s''' % seq1LdbKey, 'auto')
     for r in results:
         seqKey = r['_Sequence_key']
         seqId = r['accID']
@@ -154,9 +157,7 @@ def loadLookups():
     #
     # Load qualLookup
     #
-    results = db.sql('''select _Term_key, term '''
-		'''from VOC_Term '''
-		'''where _Vocab_key = %s''' % QUAL_VOCAB_KEY, 'auto')
+    results = db.sql('''select _Term_key, term from VOC_Term where _Vocab_key = %s''' % QUAL_VOCAB_KEY, 'auto')
     for r in results:
 	qualKey = r['_Term_key']
 	qualifier = r['term']
@@ -164,11 +165,11 @@ def loadLookups():
     #
     # Load seq2Lookup
     #
-    results = db.sql('''select _Object_key as _Sequence_key, accID '''
-        '''from ACC_Accession '''
-        '''where _MGIType_key = 19 '''
-        '''and preferred = 1 '''
-        '''and _LogicalDB_key = %s''' % seq2LdbKey, 'auto')
+    results = db.sql('''select _Object_key as _Sequence_key, accID 
+        from ACC_Accession 
+        where _MGIType_key = 19 
+        and preferred = 1 
+        and _LogicalDB_key = %s''' % seq2LdbKey, 'auto')
     for r in results:
         seqKey = r['_Sequence_key']
         seqId = r['accID']
@@ -183,8 +184,7 @@ def deleteByUser():
 
     print '%s' % mgi_utils.date()
     print 'Deleting records for this user'
-    db.sql('''delete from %s '''
-	'''where _CreatedBy_key = %s''' % (table, CREATEDBY_KEY), None)
+    db.sql('''delete from %s where _CreatedBy_key = %s''' % (table, CREATEDBY_KEY), None)
     db.commit()
 
 def run():
