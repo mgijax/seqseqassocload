@@ -23,8 +23,6 @@ cd `dirname $0`
 
 COMMON_CONFIG=common.config
 
-VEGA_PROT_CONFIG=vegaprotein_seqseqassocload.config
-VEGA_TRANS_CONFIG=vegatranscript_seqseqassocload.config
 ENSEMBL_PROT_CONFIG=ensemblprotein_seqseqassocload.config
 ENSEMBL_TRANS_CONFIG=ensembltranscript_seqseqassocload.config
 
@@ -48,39 +46,6 @@ if [ "${INSTALL_TYPE}" = "dev" ]
 then
     DEV="-d"
 fi
-
-#
-# Do vega protein seqload install
-#
-
-if [ -r ${VEGA_PROT_CONFIG} ]
-then
-    echo "Source ${VEGA_PROT_CONFIG}"
-    . ${VEGA_PROT_CONFIG}
-else
-    echo "Cannot source configuration file: ${VEGA_CONFIG}"
-    installFailed
-fi
-
-${DLAINSTALL} ${DEV}
-
-#
-# Do vega transcript seqload install
-#
-
-# source common config again
-. ${COMMON_CONFIG}
-
-if [ -r ${VEGA_TRANS_CONFIG} ]
-then
-    echo "Source ${VEGA_TRANS_CONFIG}"
-    . ${VEGA_TRANS_CONFIG}
-else
-    echo "Cannot source configuration file: ${VEGA_TRANS_CONFIG}"
-    installFailed
-fi
-
-${DLAINSTALL} ${DEV}
 
 #
 # Do ensembl protein seqload install

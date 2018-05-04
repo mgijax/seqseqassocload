@@ -8,7 +8,7 @@
 #
   Usage="Usage: seqseqassocload.sh config_file"
 #
-#     e.g. "seqseqassocload.sh vegaprotein_seqseqassocload.config
+#     e.g. "seqseqassocload.sh ensemblprotein_seqseqassocload.config
 #
 #  Env Vars:
 #
@@ -20,7 +20,7 @@
 #		/usr/local/mgi/live/mgiconfig/master.config.sh
 #      - Common load configuration file - common.config
 #      - Specific load configuration file - 
-#		e.g. vegaprotein_seqseqassocload.config
+#		e.g. ensemblprotein_seqseqassocload.config
 #      - association input file 
 #
 #  Outputs:
