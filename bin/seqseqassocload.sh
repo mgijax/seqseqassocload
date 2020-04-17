@@ -169,8 +169,7 @@ configName=`basename  ${CONFIG_LOAD}`
 echo "Running seqseqassocload ${configName}." | tee -a ${LOG_DIAG} ${LOG_PROC}
 
 # run the load
-#${SEQSEQASSOCLOAD}/bin/seqseqassocload.py >>  ${LOG_DIAG} 2>&1
-${SEQSEQASSOCLOAD}/bin/seqseqassocload.py
+${PYTHON} ${SEQSEQASSOCLOAD}/bin/seqseqassocload.py >>  ${LOG_DIAG} 2>&1
 STAT=$?
 checkStatus ${STAT} "creating bcp file"
 

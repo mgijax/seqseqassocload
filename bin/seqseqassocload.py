@@ -1,5 +1,3 @@
-#!/usr/local/bin/python
-
 ##########################################################################
 #
 # Purpose:
@@ -43,7 +41,6 @@
 import sys
 import os
 import mgi_utils
-import string
 import db
 
 #
@@ -66,7 +63,7 @@ CREATEDBY_KEY = os.environ['USERKEY']
 mgdServer = os.environ['MGD_DBSERVER']
 mgdDB = os.environ['MGD_DBNAME']
 passwdfile = os.environ['MGD_DBPASSWORDFILE']
-password = string.strip(open(passwdfile, 'r').readline())
+password = str.strip(open(passwdfile, 'r').readline())
 user = os.environ['MGD_DBUSER']
 
 # the table we are  loading
@@ -103,8 +100,8 @@ def init():
     # Throws: nothing
     global inFile, outFile, nextKey
 
-    print '%s' % mgi_utils.date()
-    print 'Initializing'
+    print('%s' % mgi_utils.date())
+    print('Initializing')
    
     db.useOneConnection(1)
     db.set_sqlLogin(user, password, mgdServer, mgdDB)
@@ -112,17 +109,17 @@ def init():
     results = db.sql('''select max(_Assoc_key) + 1 as nextKey from %s''' % table, 'auto')
     nextKey = results[0]['nextKey']
     if nextKey == None:
-	nextKey = 1001
+        nextKey = 1001
 
     inFilePath = os.environ['INFILE_NAME']
     try:
-	inFile = open(inFilePath, 'r')
+        inFile = open(inFilePath, 'r')
     except:
-	exit('Could not open file for reading %s\n' % inFilePath)
+        exit('Could not open file for reading %s\n' % inFilePath)
 
     outFilePath = '%s/%s.bcp' % (os.environ['OUTPUTDIR'],  table)
     try:
-	outFile = open(outFilePath, 'w')
+        outFile = open(outFilePath, 'w')
     except:
         exit('Could not open file for writing %s\n' % outFilePath)
 
@@ -143,22 +140,22 @@ def loadLookups():
     # Load seq1Lookup
     #
     results = db.sql('''select _Object_key as _Sequence_key, accID
-	from ACC_Accession
-	where _MGIType_key = 19 
-	and preferred = 1 
-	and _LogicalDB_key = %s''' % seq1LdbKey, 'auto')
+        from ACC_Accession
+        where _MGIType_key = 19 
+        and preferred = 1 
+        and _LogicalDB_key = %s''' % seq1LdbKey, 'auto')
     for r in results:
         seqKey = r['_Sequence_key']
         seqId = r['accID']
-	seq1Lookup[seqId] = seqKey
+        seq1Lookup[seqId] = seqKey
     #
     # Load qualLookup
     #
     results = db.sql('''select _Term_key, term from VOC_Term where _Vocab_key = %s''' % QUAL_VOCAB_KEY, 'auto')
     for r in results:
-	qualKey = r['_Term_key']
-	qualifier = r['term']
-	qualLookup[qualifier] = qualKey
+        qualKey = r['_Term_key']
+        qualifier = r['term']
+        qualLookup[qualifier] = qualKey
     #
     # Load seq2Lookup
     #
@@ -179,8 +176,8 @@ def deleteByUser():
     # Effects: deletes records from a database
     # Throws: nothing
 
-    print '%s' % mgi_utils.date()
-    print 'Deleting records for this user'
+    print('%s' % mgi_utils.date())
+    print('Deleting records for this user')
     db.sql('''delete from %s where _CreatedBy_key = %s''' % (table, CREATEDBY_KEY), None)
     db.commit()
 
@@ -193,32 +190,32 @@ def run():
     # Throws: nothing
 
     global nextKey
-    print '%s' % mgi_utils.date()
-    print 'Creating bcp file'
+    print('%s' % mgi_utils.date())
+    print('Creating bcp file')
     for line in inFile.readlines():
-        (seqId1, qualifier, seqId2) = string.split(line, TAB)
-	seqId1 = string.strip(seqId1)
-	qualifier = string.strip(qualifier)
-	seqId2 = string.strip(seqId2)
-        if seq1Lookup.has_key(seqId1):
-	    seqKey1 = seq1Lookup[seqId1]
-	else:
-	    print 'SeqId1 %s is not in the database' % seqId1
-	    continue
-	if qualLookup.has_key(qualifier):
-	    qualKey = qualLookup[qualifier]
-	else:
-	    print 'Qualifier %s is not in the database' % qualifier
-	    continue 
- 	if seq2Lookup.has_key(seqId2):
-	    seqKey2 = seq2Lookup[seqId2]
-	else:
-            print 'SeqId2 %s is not in the database' % seqId2
-	    continue
-	outFile.write('%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s' % \
-	    (nextKey, TAB, seqKey1, TAB, qualKey, TAB, seqKey2, \
-		TAB, CREATEDBY_KEY, TAB, CREATEDBY_KEY, TAB, cdate, TAB, cdate, CRT))
-	nextKey = nextKey + 1
+        (seqId1, qualifier, seqId2) = str.split(line, TAB)
+        seqId1 = str.strip(seqId1)
+        qualifier = str.strip(qualifier)
+        seqId2 = str.strip(seqId2)
+        if seqId1 in seq1Lookup:
+            seqKey1 = seq1Lookup[seqId1]
+        else:
+            print('SeqId1 %s is not in the database' % seqId1)
+            continue
+        if qualifier in qualLookup:
+            qualKey = qualLookup[qualifier]
+        else:
+            print('Qualifier %s is not in the database' % qualifier)
+            continue 
+        if seqId2 in seq2Lookup:
+            seqKey2 = seq2Lookup[seqId2]
+        else:
+            print('SeqId2 %s is not in the database' % seqId2)
+            continue
+        outFile.write('%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s' % \
+            (nextKey, TAB, seqKey1, TAB, qualKey, TAB, seqKey2, \
+                TAB, CREATEDBY_KEY, TAB, CREATEDBY_KEY, TAB, cdate, TAB, cdate, CRT))
+        nextKey = nextKey + 1
 
 def finalize():
     # Purpose: closes file descriptors and connection to the db
@@ -240,4 +237,4 @@ run()
 deleteByUser()
 finalize()
 
-print '%s' % mgi_utils.date()
+print('%s' % mgi_utils.date())
